@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>Published on {{ post.published_at }}</p>
+    <p>By {{ post.author }}</p>
+    <p>{{ post.content }}</p>
+    <p>Categories: {% for category in post.category.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p>Tags: {% for tag in post.tag.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p>{{ post.content }}</p>
+
+    <!-- Add any additional fields or information you want to display -->
+
+    <h2>Comments</h2>
+    {% for comment in comments %}
+        <div>
+            <p>{{ comment.author }} commented at {{ comment.created_at }}</p>
+            <p>{{ comment.content }}</p>
+            {% if comment.children %}
+                <ul>
+                    {% for reply in comment.children %}
+                        <li>{{ reply.author }} replied at {{ reply.created_at }}</li>
+                        <li>{{ reply.content }}</li>
+                        <!-- Display any additional fields or information for replies -->
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <hr>
+    {% empty %}
+        <p>No comments available.</p>
+    {% endfor %}
+{% endblock %}
